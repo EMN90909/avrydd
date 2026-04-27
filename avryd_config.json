@@ -1,0 +1,17 @@
+{
+  "voice_id": null,
+  "rate": 175,
+  "volume": 1.0,
+  "verbosity": "main_text",
+  "refresh_mode": "on_change",
+  "refresh_interval": 3,
+  "hotkeys_enabled": true,
+  "hotkey_read": "<ctrl>+<alt>+s",
+  "hotkey_pause": "<ctrl>+<alt>+p",
+  "hotkey_show_gui": "<ctrl>+<alt>+g",
+  "launch_at_startup": false,
+  "minimize_to_tray": true,
+  "ai_enabled": false,
+  "voice_commands_enabled": false,
+  "log_level": "INFO"
+}
