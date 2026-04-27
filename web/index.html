@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Avryd — Screen Reader</title>
+    <link rel="stylesheet" href="styles.css"/>
+    <link rel="icon" href="favicon.ico"/>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="logo">
+                <span class="logo-dot"></span>
+                <span class="logo-text">AVRYD</span>
+            </div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="/dashboard.html" id="dashboardLink" style="display:none">Dashboard</a>
+                <a href="/auth.html" class="btn-primary" id="signInBtn">Sign In</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="badge">Accessibility · Screen Reader · Windows</div>
+                <h1>Navigate the world<br/><span class="accent">without sight</span></h1>
+                <p class="hero-sub">Avryd is a powerful, fast screen reader for Windows. Built on UIA,
+                   it reads everything aloud — apps, documents, web, dialogs — naturally and reliably.</p>
+                <div class="hero-actions">
+                    <a href="/auth.html" class="btn-primary btn-large">Get Started Free</a>
+                    <a href="#features" class="btn-ghost btn-large">Learn More ↓</a>
+                </div>
+            </div>
+            <div class="hero-visual" aria-hidden="true">
+                <div class="terminal-card">
+                    <div class="terminal-bar">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                        <span class="terminal-title">Avryd</span>
+                    </div>
+                    <div class="terminal-body">
+                        <div class="speech-line">"Submit button, enabled"</div>
+                        <div class="speech-line">"Text field: Enter your name"</div>
+                        <div class="speech-line">"Checkbox: Remember me, unchecked"</div>
+                        <div class="speech-line focused">"Password field, protected"</div>
+                        <div class="cursor"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section id="features" class="features-section">
+            <div class="section-header">
+                <h2>Everything you need to navigate independently</h2>
+                <p>Avryd handles every app, screen, and situation on Windows.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎙</div>
+                    <h3>Natural Speech</h3>
+                    <p>High-quality Piper TTS voices with adjustable rate, pitch, and volume.
+                       Supports multiple languages with offline capability.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⌨</div>
+                    <h3>Keyboard Navigation</h3>
+                    <p>Full keyboard control with customizable shortcuts. Navigate by
+                       headings, buttons, links, form fields, and landmarks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>UIA Accessibility Engine</h3>
+                    <p>Built on Windows UI Automation. Reads every accessible app including
+                       Office, Chrome, Edge, File Explorer, and modern Windows apps.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📷</div>
+                    <h3>OCR Fallback</h3>
+                    <p>For apps without accessibility support, Avryd uses OCR to read
+                       the screen and builds a virtual accessibility tree automatically.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🗣</div>
+                    <h3>Voice Commands</h3>
+                    <p>Control your computer hands-free. Say "Open Chrome", "Volume up",
+                       "Next item", or install custom command plugins.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⠿</div>
+                    <h3>Braille Support</h3>
+                    <p>Full Braille keyboard input with 6-dot and 8-dot modes.
+                       Navigate and type using any connected Braille device.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Privacy First</h3>
+                    <p>Your screen content never leaves your device unless you enable
+                       cloud features. Passwords are never spoken by default.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🧩</div>
+                    <h3>Plugin System</h3>
+                    <p>Extend Avryd with plugins for custom apps, languages, and commands.
+                       Install directly from the Avryd GitHub plugin repository.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="pricing-section">
+            <div class="section-header">
+                <h2>Simple, honest pricing</h2>
+                <p>One product key, lifetime access on one device.</p>
+            </div>
+            <div class="pricing-card">
+                <div class="price-header">
+                    <h3>Avryd License</h3>
+                    <div class="price">$49 <span>one-time</span></div>
+                </div>
+                <ul class="price-features">
+                    <li>✓ Full screen reader — all apps and browsers</li>
+                    <li>✓ Piper TTS with multiple voices</li>
+                    <li>✓ OCR fallback for inaccessible apps</li>
+                    <li>✓ Voice commands and plugin support</li>
+                    <li>✓ Braille keyboard support</li>
+                    <li>✓ Lifetime updates included</li>
+                    <li>✓ One-device activation per key</li>
+                </ul>
+                <a href="/auth.html" class="btn-primary btn-large" style="display:block;text-align:center;margin-top:24px;">
+                    Get Your Key
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <span class="logo-text">AVRYD</span>
+                <p>Making Windows accessible for everyone.</p>
+            </div>
+            <div class="footer-links">
+                <a href="/privacy.html">Privacy Policy</a>
+                <a href="/terms.html">Terms of Service</a>
+                <a href="mailto:support@avryd.onrender.com">Support</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Avryd. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

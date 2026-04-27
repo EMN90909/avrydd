@@ -1,0 +1,143 @@
+<Window x:Class="Avryd.App.Windows.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Avryd — Sign In"
+        Width="520" Height="680"
+        MinWidth="440" MinHeight="560"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        AutomationProperties.Name="Avryd Sign In Window">
+
+    <Window.Resources>
+        <ResourceDictionary Source="../Styles/Theme.xaml"/>
+    </Window.Resources>
+
+    <Border CornerRadius="16" Background="{StaticResource PrimaryBrush}"
+            BorderBrush="{StaticResource BorderBrush}" BorderThickness="1">
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="30" ShadowDepth="0" Opacity="0.5" Color="#000000"/>
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header / Drag bar -->
+            <Border Grid.Row="0" Background="{StaticResource SecondaryBrush}"
+                    CornerRadius="16,16,0,0" Padding="24,16"
+                    MouseLeftButtonDown="Header_MouseLeftButtonDown">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Ellipse Width="14" Height="14" Fill="{StaticResource HighlightBrush}" Margin="0,0,12,0"/>
+                    <TextBlock Text="AVRYD" Style="{StaticResource SubheadingText}" FontSize="20"
+                               AutomationProperties.Name="Avryd Screen Reader"/>
+                    <TextBlock Text=" — Sign In" Style="{StaticResource BodyText}" VerticalAlignment="Bottom"
+                               Margin="4,0,0,1" FontSize="14"/>
+                    <Button Content="✕" Width="28" Height="28" HorizontalAlignment="Right"
+                            Margin="200,0,0,0" Click="CloseButton_Click"
+                            Style="{StaticResource SecondaryButton}" Padding="0"
+                            AutomationProperties.Name="Close window"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Main Content -->
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Padding="32,24">
+                <StackPanel>
+                    <!-- Logo Area -->
+                    <StackPanel HorizontalAlignment="Center" Margin="0,0,0,32">
+                        <Border Width="80" Height="80" CornerRadius="20"
+                                Background="{StaticResource AccentBrush}" Margin="0,0,0,16">
+                            <TextBlock Text="A" FontSize="48" FontWeight="Bold"
+                                       Foreground="{StaticResource HighlightBrush}"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <TextBlock Text="Welcome to Avryd" Style="{StaticResource HeadingText}"
+                                   FontSize="24" HorizontalAlignment="Center"/>
+                        <TextBlock Text="Sign in to access your screen reader"
+                                   Style="{StaticResource BodyText}" HorizontalAlignment="Center"
+                                   Margin="0,8,0,0"/>
+                    </StackPanel>
+
+                    <!-- OAuth Buttons -->
+                    <TextBlock Text="SIGN IN WITH" Style="{StaticResource FormLabel}"
+                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+
+                    <Button x:Name="GoogleBtn" Content="🔑  Continue with Google"
+                            Style="{StaticResource AvrydButton}" Height="48" Margin="0,0,0,12"
+                            Click="GoogleBtn_Click" FontSize="15"
+                            AutomationProperties.Name="Sign in with Google"
+                            AutomationProperties.HelpText="Opens your browser to sign in with your Google account"/>
+
+                    <Button x:Name="MicrosoftBtn" Content="🪟  Continue with Microsoft"
+                            Style="{StaticResource AvrydButton}" Height="48" Margin="0,0,0,12"
+                            Background="#0078D4" Click="MicrosoftBtn_Click" FontSize="15"
+                            AutomationProperties.Name="Sign in with Microsoft"/>
+
+                    <Button x:Name="FacebookBtn" Content="f  Continue with Facebook"
+                            Style="{StaticResource AvrydButton}" Height="48" Margin="0,0,0,24"
+                            Background="#1877F2" Click="FacebookBtn_Click" FontSize="15"
+                            AutomationProperties.Name="Sign in with Facebook"/>
+
+                    <Separator/>
+
+                    <!-- Manual Key Entry -->
+                    <TextBlock Text="OR ACTIVATE WITH PRODUCT KEY" Style="{StaticResource FormLabel}"
+                               HorizontalAlignment="Center" Margin="0,0,0,16"/>
+
+                    <TextBlock Text="Email address" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="EmailBox" Style="{StaticResource AvrydTextBox}"
+                             Height="44" Margin="0,0,0,12"
+                             AutomationProperties.Name="Email address"
+                             AutomationProperties.HelpText="Enter the email associated with your Avryd account"/>
+
+                    <TextBlock Text="Product key" Style="{StaticResource FormLabel}"/>
+                    <TextBox x:Name="KeyBox" Style="{StaticResource AvrydTextBox}"
+                             Height="44" Margin="0,0,0,20"
+                             AutomationProperties.Name="Product key"
+                             AutomationProperties.HelpText="Enter the product key from your Avryd account"/>
+
+                    <Button x:Name="ActivateBtn" Content="Activate Avryd"
+                            Style="{StaticResource AvrydButton}" Height="48"
+                            Background="{StaticResource HighlightBrush}" Click="ActivateBtn_Click"
+                            AutomationProperties.Name="Activate Avryd with email and product key"/>
+
+                    <!-- Status -->
+                    <TextBlock x:Name="StatusText" Style="{StaticResource BodyText}"
+                               HorizontalAlignment="Center" Margin="0,16,0,0"
+                               Visibility="Collapsed"/>
+
+                    <!-- Loading indicator -->
+                    <ProgressBar x:Name="LoadingBar" IsIndeterminate="True" Height="4"
+                                 Margin="0,12,0,0" Visibility="Collapsed"
+                                 Foreground="{StaticResource HighlightBrush}"
+                                 Background="{StaticResource SurfaceBrush}"
+                                 BorderThickness="0"/>
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- Footer -->
+            <Border Grid.Row="2" Background="{StaticResource SecondaryBrush}"
+                    CornerRadius="0,0,16,16" Padding="24,12">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Style="{StaticResource BodyText}" FontSize="12">
+                        <Run Text="Don't have an account? "/>
+                        <Hyperlink NavigateUri="https://avryd.onrender.com"
+                                   RequestNavigate="Hyperlink_RequestNavigate">
+                            <Run Text="Get Avryd"/>
+                        </Hyperlink>
+                        <Run Text=" · "/>
+                        <Hyperlink NavigateUri="https://avryd.onrender.com/privacy"
+                                   RequestNavigate="Hyperlink_RequestNavigate">
+                            <Run Text="Privacy"/>
+                        </Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
+</Window>
