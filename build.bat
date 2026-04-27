@@ -1,50 +1,91 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: AVRYD65 Automated Build Script
-:: This script compiles the C++ native components and publishes the .NET service.
+:: ============================================================
+:: Avryd Screen Reader — Build Script
+:: Compiles all projects and produces AvrydSetup.exe
+:: ============================================================
 
-set GCC_PATH=C:\ProgramData\mingw64\mingw64\bin\gcc.exe
-set GXX_PATH=C:\ProgramData\mingw64\mingw64\bin\g++.exe
-set DOTNET_PATH=dotnet
-set ISCC_PATH="C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+title Avryd Build
 
-:: 1. Clean previous build
-if exist dist rmdir /s /q dist
-mkdir dist\publish
+echo.
+echo  ==========================================
+echo        AVRYD SCREEN READER - BUILD
+echo  ==========================================
+echo.
 
-echo [1/4] Compiling Native Hooks (C++)...
-%GCC_PATH% -shared -o src\Avryd65.Native\Avryd65.Native.dll src\Avryd65.Native\native_hooks.c -luser32 -lgdi32
-if %errorlevel% neq 0 (
-    echo ERROR: C++ Compilation failed.
-    pause
-    exit /b 1
+:: -- Configuration ------------------------------------------
+set CONFIG=Release
+set DOTNET=dotnet
+set NSIS=makensis
+set DIST_DIR=%~dp0dist
+set APP_OUT=%DIST_DIR%\app
+set SLN=%~dp0Avryd.sln
+
+:: -- Check prerequisites ------------------------------------
+echo [1/6] Checking prerequisites...
+where %DOTNET% >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo  ERROR: .NET SDK not found. Install from https://dot.net
+    pause & exit /b 1
+)
+for /f "tokens=*" %%v in ('dotnet --version') do set DOTNET_VER=%%v
+echo  .NET SDK: %DOTNET_VER%
+
+:: -- Clean --------------------------------------------------
+echo.
+echo [2/6] Cleaning previous build...
+if exist "%DIST_DIR%" rmdir /s /q "%DIST_DIR%"
+mkdir "%DIST_DIR%"
+mkdir "%APP_OUT%"
+echo  Done.
+
+:: -- Restore NuGet packages ---------------------------------
+echo.
+echo [3/6] Restoring packages...
+%DOTNET% restore "%SLN%"
+if %ERRORLEVEL% neq 0 ( echo  ERROR: Restore failed! & pause & exit /b 1 )
+echo  Done.
+
+:: -- Build (64-bit) -----------------------------------------
+echo.
+echo [4/6] Building Avryd Release x64...
+%DOTNET% publish "%~dp0src\Avryd.App\Avryd.App.csproj" ^
+    -c %CONFIG% -r win-x64 --self-contained false -o "%APP_OUT%"
+if %ERRORLEVEL% neq 0 ( echo  ERROR: Build failed! & pause & exit /b 1 )
+echo  Done.
+
+:: -- Build (32-bit) -----------------------------------------
+echo.
+echo [5/6] Building Avryd Release x86 (32-bit)...
+%DOTNET% publish "%~dp0src\Avryd.App\Avryd.App.csproj" ^
+    -c %CONFIG% -r win-x86 --self-contained false -o "%DIST_DIR%\app_x86"
+if %ERRORLEVEL% neq 0 (
+    echo  WARNING: 32-bit build failed (continuing).
 )
 
-echo [2/4] Publishing Core Services...
-:: Publish the Launcher and Service to the same folder
-%DOTNET_PATH% publish src\Avryd65.Launcher\Avryd65.Launcher.csproj -c Release -r win-x64 --self-contained true -o dist\publish -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
-%DOTNET_PATH% publish src\Avryd65.Service\Avryd65.Service.csproj -c Release -r win-x64 --self-contained true -o dist\publish -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+:: -- Copy resources -----------------------------------------
+if exist "%~dp0resources" xcopy /s /q /i /y "%~dp0resources" "%APP_OUT%\resources" >nul
+if exist "%~dp0misc\images"  xcopy /s /q /i /y "%~dp0misc\images"  "%APP_OUT%\Assets"   >nul
 
-echo [3/4] Finalizing Artifacts...
-copy src\Avryd65.Native\Avryd65.Native.dll dist\publish\ >nul
-
-echo [4/4] Building Accessible Installer...
-if exist %ISCC_PATH% (
-    %ISCC_PATH% setup.iss
+:: -- NSIS Installer -----------------------------------------
+echo.
+echo [6/6] Creating installer...
+where %NSIS% >nul 2>&1
+if %ERRORLEVEL% neq 0 (
+    echo  NOTE: NSIS not found. Install from https://nsis.sourceforge.io
+    echo  Then run:  makensis installer\setup.nsi
 ) else (
-    where iscc >nul 2>nul
-    if !errorlevel! equ 0 (
-        iscc setup.iss
-    ) else (
-        echo WARNING: Inno Setup not found. Cannot build .exe installer.
-        echo Please install Inno Setup 6 or add ISCC.exe to your PATH.
-    )
+    %NSIS% "%~dp0installer\setup.nsi"
+    if %ERRORLEVEL% neq 0 ( echo  ERROR: NSIS failed! & pause & exit /b 1 )
+    echo  Installer: %DIST_DIR%\AvrydSetup.exe
 )
 
 echo.
-echo BUILD COMPLETE.
-if exist dist\Avryd_setup.exe (
-    echo SUCCESS: Installer created at dist\Avryd_setup.exe
-)
+echo  ==========================================
+echo    BUILD COMPLETE
+echo    App output:  %APP_OUT%
+echo  ==========================================
+echo.
 pause
+endlocal

@@ -1,0 +1,69 @@
+AVRYD SCREEN READER
+Privacy Policy and Terms of Service
+Version 1.0 — 2024
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+PRIVACY POLICY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. WHAT WE COLLECT
+   Avryd collects:
+   - Your email address and OAuth identity (for authentication)
+   - A hardware fingerprint of your device (for license binding)
+   - Usage session duration (for your dashboard statistics)
+   - Crash logs if you enable error reporting
+
+2. WHAT WE DO NOT COLLECT
+   - Screen content, text read by the screen reader
+   - Passwords or sensitive form data
+   - Keystrokes or typed text
+   - Your browsing history or app usage
+
+3. DATA STORAGE
+   Your authentication data is stored securely on Supabase.
+   All local settings are stored on your device in
+   %LOCALAPPDATA%\Avryd and never transmitted unless you
+   explicitly use a cloud-sync feature.
+
+4. THIRD PARTIES
+   We use Supabase for authentication storage.
+   OAuth sign-in uses Google, Microsoft, or Facebook.
+   We do not sell or share your data with any third party.
+
+5. YOUR RIGHTS
+   You may delete your account at any time from the dashboard.
+   Account deletion removes all server-side data within 30 days.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TERMS OF SERVICE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. LICENSE
+   Each product key grants one (1) activated device.
+   Keys are non-transferable. Using a key on multiple devices
+   will result in deactivation of previous devices.
+
+2. PERMITTED USE
+   Avryd may be used on any Windows PC you personally own or
+   control, for any legal purpose.
+
+3. PROHIBITED USE
+   You may not:
+   - Reverse-engineer, decompile, or disassemble Avryd
+   - Share, sell, or transfer your product key
+   - Use Avryd for illegal or harmful purposes
+   - Attempt to bypass activation
+
+4. DISCLAIMER
+   Avryd is provided "as is." We make no warranty that Avryd
+   will work with every application. Accessibility depends on
+   applications implementing standard APIs.
+
+5. LIMITATION OF LIABILITY
+   Our total liability is limited to the amount you paid for
+   your product key.
+
+By clicking "I Agree" you accept these terms and the privacy policy.
+
+Contact: support@avryd.onrender.com
+Web: https://avryd.onrender.com

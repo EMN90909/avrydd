@@ -1,166 +1,133 @@
-# AVRYD — Accessibility Screen Reader
+# Avryd Screen Reader
 
-**AVRYD** is a Windows desktop screen reader built in Python. It runs permanently
-in the background, detects foreground window changes, scrapes readable text via
-Windows UI Automation, and speaks it aloud through Windows SAPI using pyttsx3.
+A full-featured, fast, and accessible screen reader for Windows — built in **C# / .NET 8** using the **UI Automation (UIA) API**.
 
 ---
 
 ## Features
 
-| Feature | Detail |
+| Feature | Description |
 |---|---|
-| **Speech** | Windows SAPI via pyttsx3 — choose voice, rate, volume |
-| **UI Scraping** | uiautomation walks the active window's UI tree up to 10 levels deep |
-| **Focus Tracking** | win32gui detects foreground window changes in real time |
-| **Hotkeys** | Global `Ctrl+Alt+S` (read), `Ctrl+Alt+P` (pause), `Ctrl+Alt+G` (show GUI) |
-| **GUI** | Clean Tkinter control panel — all settings, no code editing needed |
-| **System Tray** | Runs quietly in tray; right-click for quick actions |
-| **Startup** | Optional Windows registry entry to launch at login |
-| **Verbosity** | "Main text only" or "All controls" scraping modes |
-| **Modes** | On window change / timed interval / manual (hotkey only) |
-| **Persistent** | Saves settings to `avryd_config.json` next to the executable |
+| **UIA Engine** | Core built on Windows UI Automation — reads all standard Windows apps |
+| **Piper TTS** | High-quality offline voices via Piper TTS engine |
+| **Focus Tracking** | Real-time focus change detection and announcement |
+| **Reading Modes** | Browse, Reading, Navigation, Typing, Forms |
+| **Keyboard Shortcuts** | Full keyboard navigation with customizable hotkeys |
+| **Voice Commands** | Say "Open Chrome", "Volume up", "Next item", etc. |
+| **Touch / Gesture** | Swipe, tap, and drag to explore screen by touch |
+| **Braille Support** | 6-dot and 8-dot Braille keyboard input |
+| **OCR Fallback** | Reads inaccessible apps using Tesseract OCR |
+| **Plugin System** | Install language/command plugins from GitHub |
+| **Account System** | OAuth sign-in (Google/Microsoft/Facebook), product key activation |
+| **Privacy First** | Screen content never sent to cloud by default |
+| **32 and 64-bit** | Supports both x86 and x64 Windows |
 
 ---
 
-## Project Structure (flat — no subfolders)
+## Project Structure
 
 ```
-avryd.py          ← Main app orchestrator, entry point
-speaker.py        ← pyttsx3/SAPI speech engine wrapper
-ui_scraper.py     ← UI Automation scraper (UIScraper class)
-focus_tracker.py  ← Foreground window change detector
-hotkeys.py        ← Global hotkey manager (keyboard library)
-gui.py            ← Tkinter control panel
-config.py         ← JSON config load/save (singleton)
-logger.py         ← Rotating file + console logger
-requirements.txt  ← Python dependencies
-setup.iss         ← Inno Setup installer script
-build.bat         ← One-click build + installer packaging
-README.md         ← This file
-avryd_config.json ← Auto-generated settings file
-avryd.log         ← Auto-generated log file
+Avryd.sln
+src/
+  Avryd.Core/          Core engine (UIA, Speech, Focus, Input, Plugins, OCR, Auth)
+  Avryd.App/           WPF launcher and settings GUI
+  Avryd.Service/       Windows background service
+resources/
+  piper/               Piper TTS engine (user-supplied — see resources/piper/README.txt)
+  tessdata/            Tesseract OCR data (user-supplied)
+installer/
+  setup.nsi            NSIS installer script
+misc/
+  images/              App icons (SVG sources — convert to .ico before building)
+web/                   Web server files (hosted at avryd.onrender.com)
+build.bat              Full build and installer
+compile_setup.bat      Installer only
+PRIVACY_TERMS.txt      Shown during install
 ```
 
 ---
 
-## Installation (from source)
+## Setup and Build
 
 ### Prerequisites
 
-- **Windows 10/11** (Windows only — uses SAPI, win32, UI Automation)
-- **Python 3.10+**
-- **pip**
+- [.NET 8 SDK](https://dot.net) (Windows)
+- [NSIS](https://nsis.sourceforge.io) (for installer)
+- [Piper TTS](https://github.com/rhasspy/piper/releases) — place in `resources/piper/`
+- Voice models — place `.onnx` files in `resources/piper/voices/`
+- *(Optional)* [Tesseract data](https://github.com/tesseract-ocr/tessdata) — `resources/tessdata/eng.traineddata`
 
-### 1. Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Run AVRYD
-
-```bash
-python avryd.py
-```
-
-AVRYD will:
-1. Start the speech engine and say "AVRYD is active and listening."
-2. Open the settings GUI
-3. Begin watching for foreground window changes
-4. Appear in the system tray
-
----
-
-## Building a distributable
-
-### Prerequisite: PyInstaller
-
-```bash
-pip install pyinstaller
-```
-
-### One-click build
+### Build
 
 ```bat
 build.bat
 ```
 
 This will:
-1. Install all dependencies
-2. Run PyInstaller to produce `dist\avryd\avryd.exe`
-3. If **Inno Setup 6** is installed, compile `dist\installer\AVRYD_Setup.exe`
+1. Restore NuGet packages
+2. Compile Avryd (x64 and x86)
+3. Copy resources
+4. Create `dist/AvrydSetup.exe` (if NSIS is installed)
 
-Install `AVRYD_Setup.exe` on any Windows machine — no Python required.
+### Create installer only
 
----
-
-## Default Hotkeys
-
-| Hotkey | Action |
-|---|---|
-| `Ctrl + Alt + S` | Read current window now |
-| `Ctrl + Alt + P` | Pause / Resume background reading |
-| `Ctrl + Alt + G` | Show settings GUI |
-
-Hotkeys can be changed or disabled in the GUI → Hotkeys panel.
-
----
-
-## Configuration
-
-Settings are saved to `avryd_config.json` automatically when you click
-**Save Settings** in the GUI. They are loaded on every startup.
-
-Key settings:
-
-```json
-{
-  "voice_id": null,
-  "rate": 175,
-  "volume": 1.0,
-  "verbosity": "main_text",
-  "refresh_mode": "on_change",
-  "refresh_interval": 3,
-  "hotkeys_enabled": true,
-  "launch_at_startup": false,
-  "minimize_to_tray": true
-}
+```bat
+compile_setup.bat
 ```
 
 ---
 
-## Verbosity Modes
+## Keyboard Shortcuts
 
-| Mode | Description |
+| Shortcut | Action |
 |---|---|
-| `main_text` | Reads document areas, edit fields, large text — filters buttons, menus, nav chrome |
-| `all_controls` | Reads every labelled control including buttons, tabs, menu items |
+| `Ctrl+Alt+S` | Stop speaking |
+| `Ctrl+Alt+R` | Read current item |
+| `Ctrl+Alt+Right` | Next item |
+| `Ctrl+Alt+Left` | Previous item |
+| `Ctrl+Alt+M` | Toggle reading mode |
+| `Ctrl+Alt+A` | Read all content |
+| `Ctrl+Alt+P` | Repeat last item |
+| `Ctrl+Alt+Home` | Jump to top |
+| `Ctrl+Alt+End` | Jump to bottom |
+| `Ctrl+Alt+B` | Next button |
+| `Ctrl+Alt+L` | Next link |
+| `Ctrl+Alt+E` | Next edit field |
+| `Ctrl+Alt+H` | Next heading |
+| `Ctrl+Alt+G` | Open Avryd launcher |
 
 ---
 
-## Refresh / Trigger Modes
+## Authentication and Activation
 
-| Mode | Description |
-|---|---|
-| `on_change` | Speaks automatically when the foreground window changes |
-| `timed` | Re-reads the window every N seconds (set interval in GUI) |
-| `manual` | Silent — only reads when hotkey or "Read Now" button is pressed |
+Avryd uses OAuth (Google/Microsoft/Facebook) via the web backend at **https://avryd.onrender.com**.
+
+1. Sign in on the web portal
+2. Copy your product key
+3. Open Avryd, enter email and product key — activated
+
+Product keys are single-use and bound to one device (hardware fingerprint).
 
 ---
 
-## Extending AVRYD
+## Plugin System
 
-Each module is self-contained and easy to expand:
+Plugins are `.dll` files hosted at `https://github.com/avryd/avryd/plugins`.
 
-- **Browser reading** → extend `ui_scraper.py` to detect browser windows and use CDP/Selenium
-- **OCR** → add `ocr_scraper.py` using pytesseract for non-accessible apps
-- **Document reading** → add `doc_reader.py` using python-docx / pdfplumber
-- **Custom filters** → add filter rules to `UIScraper._walk()` by app name or window class
-- **New hotkeys** → add entries to `HotkeyManager` and expose them in `gui.py`
+In the Avryd Launcher, go to the Plugins tab, browse available plugins, and install.
+
+---
+
+## Privacy
+
+- Screen content **never** leaves your device by default
+- Passwords are **never** spoken aloud by default
+- Local settings encrypted with AES-256
+- No analytics or telemetry
 
 ---
 
 ## License
 
-© Emtra. All rights reserved.
+Copyright 2024 Avryd. All rights reserved.
+See [PRIVACY_TERMS.txt](./PRIVACY_TERMS.txt) for full terms.

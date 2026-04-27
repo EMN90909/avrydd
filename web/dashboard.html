@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Avryd — Dashboard</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="nav-container">
+            <div class="logo"><span class="logo-dot"></span><span class="logo-text">AVRYD</span></div>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <span id="userEmail" class="nav-user"></span>
+                <button class="btn-ghost" onclick="signOut()">Sign Out</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-container">
+            <h1>Your Dashboard</h1>
+            <p class="dashboard-sub" id="welcomeMsg">Loading...</p>
+
+            <!-- Status -->
+            <div class="dash-grid">
+                <div class="dash-card">
+                    <div class="dash-icon">🔑</div>
+                    <h3>License Status</h3>
+                    <div id="licenseStatus" class="status-badge status-active">Active</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-icon">💻</div>
+                    <h3>Activated Device</h3>
+                    <div id="deviceInfo" class="dash-value">Loading...</div>
+                </div>
+                <div class="dash-card">
+                    <div class="dash-icon">📅</div>
+                    <h3>Member Since</h3>
+                    <div id="memberSince" class="dash-value">Loading...</div>
+                </div>
+            </div>
+
+            <!-- Product Key -->
+            <div class="section-card">
+                <h2>Your Product Key</h2>
+                <p>Use this key in the Avryd app to activate on your device.</p>
+                <div class="key-display">
+                    <div class="key-box" id="productKey" tabindex="0" aria-label="Your product key"></div>
+                    <button class="btn-secondary" onclick="copyKey()">Copy Key</button>
+                    <button class="btn-ghost" onclick="regenerateKey()" style="margin-left:8px;">Regenerate Key</button>
+                </div>
+                <p class="hint">⚠ Each key can only be used once. Regenerating will invalidate the old key.</p>
+            </div>
+
+            <!-- Sessions -->
+            <div class="section-card">
+                <h2>Recent Sessions</h2>
+                <div id="sessionsList" class="sessions-list">
+                    <p class="loading-text">Loading session data...</p>
+                </div>
+            </div>
+
+            <!-- Download -->
+            <div class="section-card download-card">
+                <h2>Download Avryd</h2>
+                <p>Download the latest version of Avryd for Windows.</p>
+                <div class="download-buttons">
+                    <a href="/downloads/AvrydSetup.exe" class="btn-primary">
+                        ⬇ Download Avryd Setup (64-bit)
+                    </a>
+                    <a href="/downloads/AvrydSetup_x86.exe" class="btn-secondary" style="margin-left:12px;">
+                        ⬇ Download Avryd Setup (32-bit)
+                    </a>
+                </div>
+                <p class="version-info" id="versionInfo">Latest version: loading...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDashboard();
+        });
+    </script>
+</body>
+</html>
